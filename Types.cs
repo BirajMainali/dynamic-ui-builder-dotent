@@ -40,6 +40,20 @@ public class InputType
     public int? MaxLength { get; set; }
     public string Format { get; set; }
     public string Culture { get; set; }
+    public string OptionUrl { get; set; }
+    public List<OptionItem> Options { get; set; } = new List<OptionItem>();
+    public List<DependsOnItem> DependsOn { get; set; } = new List<DependsOnItem>();
+}
+
+public class OptionItem
+{
+    public object Id { get; set; }
+    public string Name { get; set; }
+}
+
+public class DependsOnItem
+{
+    public string Name { get; set; }
 }
 
 public class Column

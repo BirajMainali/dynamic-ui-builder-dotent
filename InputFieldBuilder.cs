@@ -15,8 +15,9 @@ public class InputFieldBuilder : IInputFieldBuilder
         _inputField.Label = label;
         return this;
     }
-
-    public IInputFieldBuilder WithType(Action<IInputTypeBuilder> typeAction)
+    
+    
+    public IInputFieldBuilder WithConfiguration(Action<IInputTypeBuilder> typeAction)
     {
         var typeBuilder = new InputTypeBuilder(_inputField.Type);
         typeAction(typeBuilder);

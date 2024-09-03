@@ -33,9 +33,26 @@ public class FormConfigurationBuilder : IFormConfigurationBuilder
 
 public class InputTypeBuilder(InputType inputType) : IInputTypeBuilder
 {
-    public IInputTypeBuilder WithType(string type)
+    public IInputTypeBuilder WithType(InputTypeEnum type)
     {
-        inputType.Type = type;
+        inputType.Type = type.ToString();
+        return this;
+    }
+
+
+    public IInputTypeBuilder WithDependsOn(Action<List<DependsOnItem>> dependsOnConfig)
+    {
+        var dependsOn = new List<DependsOnItem>();
+        dependsOnConfig(dependsOn);
+        inputType.DependsOn = dependsOn;
+        return this;
+    }
+
+    public InputTypeBuilder WithOptions(Action<List<OptionItem>> optionsConfig)
+    {
+        var options = new List<OptionItem>();
+        optionsConfig(options);
+        inputType.Options = options;
         return this;
     }
 
@@ -60,6 +77,12 @@ public class InputTypeBuilder(InputType inputType) : IInputTypeBuilder
     public IInputTypeBuilder WithCulture(string culture)
     {
         inputType.Culture = culture;
+        return this;
+    }
+
+    public IInputTypeBuilder WithOptionEndpoint(string endpoint)
+    {
+        inputType.OptionUrl = endpoint;
         return this;
     }
 }

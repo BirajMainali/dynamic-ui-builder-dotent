@@ -26,7 +26,7 @@ app.MapGet("/person-form", () =>
             .WithTitle("Personal Information")
             .WithDescription("Form to collect personal information of the user.")
             .WithHttpMethod("POST")
-            .WithApiEndpoint("/api/personal-information")
+            .WithEndpoint("/api/personal-information")
             .WithRefreshOnSubmission(true)
             .WithLayout(layoutBuilder =>
             {
@@ -42,20 +42,77 @@ app.MapGet("/person-form", () =>
                     inputFieldBuilder
                         .WithName("firstName")
                         .WithLabel("First Name")
-                        .WithType(typeBuilder => typeBuilder
-                            .WithType("string")
-                            .WithMinLength(1)
-                            .WithMaxLength(100))
+                        .WithConfiguration(typeBuilder =>
+                        {
+                            typeBuilder
+                                .WithType(InputTypeEnum.Text)
+                                .WithMinLength(1)
+                                .WithMaxLength(100);
+                        })
                         .IsRequired(true)
                         .WithValidationPattern("^[a-zA-Z]+$");
+                })
+                .AddInput(fieldBuilder =>
+                {
+                    fieldBuilder.WithName("Gender")
+                        .WithLabel("GenderId")
+                        .WithConfiguration(typeBuilder =>
+                        {
+                            typeBuilder.WithType(InputTypeEnum.Select);
+                            typeBuilder.WithOptions(optionItems =>
+                            {
+                                optionItems.AddRange(new List<OptionItem>
+                                {
+                                    new()
+                                    {
+                                        Id = 1,
+                                        Name = "Male"
+                                    },
+                                    new()
+                                    {
+                                        Id = 2,
+                                        Name = "Female"
+                                    }
+                                });
+                            });
+                        });
+                })
+                .AddInput(fieldBuilder =>
+                {
+                    fieldBuilder
+                        .WithName("District")
+                        .WithLabel("DistrictId")
+                        .WithConfiguration(x =>
+                        {
+                            x.WithType(InputTypeEnum.Select);
+                            x.WithOptionEndpoint("/api/districts");
+                        });
+                })
+                .AddInput(x =>
+                {
+                    x.WithLabel("Municipality")
+                        .WithName("MunicipalityId")
+                        .WithConfiguration(typeBuilder =>
+                        {
+                            typeBuilder
+                                .WithType(InputTypeEnum.Select)
+                                .WithDependsOn(list =>
+                                {
+                                    list.Add(new DependsOnItem()
+                                    {
+                                        Name = "DistrictId",
+                                    });
+                                })
+                                .WithOptionEndpoint("/api/municipalities?districtId={DistrictId}");
+                        });
                 })
                 .AddInput(inputFieldBuilder =>
                 {
                     inputFieldBuilder
                         .WithName("dateOfBirth")
                         .WithLabel("Date of Birth")
-                        .WithType(typeBuilder => typeBuilder
-                            .WithType("date")
+                        .WithConfiguration(typeBuilder => typeBuilder
+                            .WithType(InputTypeEnum.DateTime)
                             .WithFormat("YYYY-MM-DD")
                             .WithCulture("en-US"))
                         .IsRequired(true)
@@ -66,8 +123,8 @@ app.MapGet("/person-form", () =>
                     inputFieldBuilder
                         .WithName("currentAge")
                         .WithLabel("Current Age")
-                        .WithType(typeBuilder => typeBuilder
-                            .WithType("computed"))
+                        .WithConfiguration(typeBuilder => typeBuilder
+                            .WithType(InputTypeEnum.Number))
                         .WithComputationEndpoint("/api/age");
                 });
         })

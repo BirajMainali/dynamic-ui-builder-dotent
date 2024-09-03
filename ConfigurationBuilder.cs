@@ -20,7 +20,7 @@ public class ConfigurationBuilder(Configuration configuration) : IConfigurationB
         return this;
     }
 
-    public IConfigurationBuilder WithApiEndpoint(string endpoint)
+    public IConfigurationBuilder WithEndpoint(string endpoint)
     {
         configuration.ApiEndpoint = endpoint;
         return this;
