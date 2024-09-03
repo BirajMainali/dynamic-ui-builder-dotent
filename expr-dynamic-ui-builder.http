@@ -1,0 +1,6 @@
+@expr_dynamic_ui_builder_HostAddress = http://localhost:5224
+
+GET {{expr_dynamic_ui_builder_HostAddress}}/person-form
+Accept: application/json
+
+###
