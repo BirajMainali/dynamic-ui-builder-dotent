@@ -54,8 +54,8 @@ app.MapGet("/person-form", () =>
                 })
                 .AddInput(fieldBuilder =>
                 {
-                    fieldBuilder.WithName("Gender")
-                        .WithLabel("GenderId")
+                    fieldBuilder.WithName("GenderId")
+                        .WithLabel("Gender")
                         .WithConfiguration(typeBuilder =>
                         {
                             typeBuilder.WithType(InputTypeEnum.Select);
@@ -80,8 +80,8 @@ app.MapGet("/person-form", () =>
                 .AddInput(fieldBuilder =>
                 {
                     fieldBuilder
-                        .WithName("District")
-                        .WithLabel("DistrictId")
+                        .WithName("DistrictId")
+                        .WithLabel("District")
                         .WithConfiguration(x =>
                         {
                             x.WithType(InputTypeEnum.Select);
@@ -127,59 +127,6 @@ app.MapGet("/person-form", () =>
                             .WithType(InputTypeEnum.Number))
                         .WithComputationEndpoint("/api/age");
                 });
-        })
-        .WithTable(tableBuilder =>
-        {
-            tableBuilder
-                .AddColumn(columnBuilder => columnBuilder
-                    .WithName("Id")
-                    .WithLabel("Id")
-                    .WithType("hidden"))
-                .AddColumn(columnBuilder => columnBuilder
-                    .WithName("firstName")
-                    .WithLabel("First Name")
-                    .WithType("string"))
-                .AddColumn(columnBuilder => columnBuilder
-                    .WithName("dateOfBirth")
-                    .WithLabel("Date of Birth")
-                    .WithType("date"))
-                .AddColumn(columnBuilder => columnBuilder
-                    .WithName("currentAge")
-                    .WithLabel("Current Age")
-                    .WithType("number"))
-                .AddColumn(columnBuilder => columnBuilder
-                    .WithName("actions")
-                    .WithLabel("Actions")
-                    .WithType("actions")
-                    .AddAction(actionBuilder =>
-                    {
-                        actionBuilder
-                            .WithName("edit")
-                            .WithLabel("Edit")
-                            .WithConfig(configBuilder =>
-                            {
-                                configBuilder
-                                    .WithType("modal")
-                                    .WithTitle("Edit Record")
-                                    .WithRoute("/person-form/edit/{Id}")
-                                    .WithMethod("PUT");
-                            });
-                    })
-                    .AddAction(actionBuilder =>
-                    {
-                        actionBuilder
-                            .WithName("delete")
-                            .WithLabel("Delete")
-                            .WithConfig(configBuilder =>
-                            {
-                                configBuilder
-                                    .WithType("modal")
-                                    .WithTitle("Delete Record")
-                                    .WithMessage("Are you sure you want to delete this record?")
-                                    .WithEndpoint("/api/personal-information")
-                                    .WithMethod("DELETE");
-                            });
-                    }));
         }).Build();
 
     return formConfiguration;
